@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { ArticleCard } from "./ArticleCard";
 import { Pagination } from "@/components/ui/Pagination";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
@@ -28,34 +28,38 @@ export function ArticlesList() {
   });
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-
-  const fetchArticles = useCallback(async (page: number, searchQuery: string) => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams({
-        page: page.toString(),
-        limit: "6",
-      });
-      if (searchQuery) params.set("search", searchQuery);
-
-      const res = await fetch(`/api/articles?${params}`);
-      const data = await res.json();
-
-      setArticles(data.articles);
-      setPagination(data.pagination);
-    } catch (error) {
-      console.error("Failed to fetch articles:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    fetchArticles(1, search);
-  }, [fetchArticles, search]);
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams({
+          page: currentPage.toString(),
+          limit: "6",
+        });
+        if (search) params.set("search", search);
+
+        const res = await fetch(`/api/articles?${params}`);
+        const data = await res.json();
+
+        if (!cancelled) {
+          setArticles(data.articles);
+          setPagination(data.pagination);
+        }
+      } catch (error) {
+        console.error("Failed to fetch articles:", error);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, [currentPage, search]);
 
   const handlePageChange = (page: number) => {
-    fetchArticles(page, search);
+    setCurrentPage(page);
     window.scrollTo({ top: document.getElementById("articles")?.offsetTop || 0, behavior: "smooth" });
   };
 

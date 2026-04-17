@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -34,27 +34,34 @@ export default function AdminArticlesPage() {
   });
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("");
-
-  const fetchArticles = useCallback(async (page: number, status: string) => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams({ page: page.toString(), limit: "20" });
-      if (status) params.set("status", status);
-
-      const res = await fetch(`/api/admin/articles?${params}`);
-      const data = await res.json();
-      setArticles(data.articles);
-      setPagination(data.pagination);
-    } catch {
-      toast.error("Failed to fetch articles");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    fetchArticles(1, statusFilter);
-  }, [fetchArticles, statusFilter]);
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams({ page: pagination.page.toString(), limit: "20" });
+        if (statusFilter) params.set("status", statusFilter);
+
+        const res = await fetch(`/api/admin/articles?${params}`);
+        const data = await res.json();
+        if (!cancelled) {
+          setArticles(data.articles);
+          setPagination(data.pagination);
+        }
+      } catch {
+        if (!cancelled) toast.error("Failed to fetch articles");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [statusFilter, refreshKey]);
+
+  const refreshArticles = () => setRefreshKey((k) => k + 1);
 
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this article?")) return;
@@ -70,7 +77,7 @@ export default function AdminArticlesPage() {
       }
 
       toast.success("Article deleted");
-      fetchArticles(pagination.page, statusFilter);
+      refreshArticles();
     } catch {
       toast.error("Failed to delete article");
     }
@@ -92,7 +99,7 @@ export default function AdminArticlesPage() {
       }
 
       toast.success(data.message);
-      fetchArticles(pagination.page, statusFilter);
+      refreshArticles();
     } catch {
       toast.error("Failed to send newsletter");
     }

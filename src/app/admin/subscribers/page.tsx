@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card } from "@/components/ui/Card";
@@ -40,30 +40,40 @@ export default function AdminSubscribersPage() {
   const [newLastName, setNewLastName] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [addLoading, setAddLoading] = useState(false);
-
-  const fetchSubscribers = useCallback(async (page: number, searchQuery: string) => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams({
-        page: page.toString(),
-        limit: "20",
-      });
-      if (searchQuery) params.set("search", searchQuery);
-
-      const res = await fetch(`/api/admin/subscribers?${params}`);
-      const data = await res.json();
-      setSubscribers(data.subscribers);
-      setPagination(data.pagination);
-    } catch {
-      toast.error("Failed to fetch subscribers");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    fetchSubscribers(1, search);
-  }, [fetchSubscribers, search]);
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams({
+          page: currentPage.toString(),
+          limit: "20",
+        });
+        if (search) params.set("search", search);
+
+        const res = await fetch(`/api/admin/subscribers?${params}`);
+        const data = await res.json();
+        if (!cancelled) {
+          setSubscribers(data.subscribers);
+          setPagination(data.pagination);
+        }
+      } catch {
+        if (!cancelled) toast.error("Failed to fetch subscribers");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, [search, currentPage, refreshKey]);
+
+  const refreshSubscribers = () => {
+    setCurrentPage(1);
+    setRefreshKey((k) => k + 1);
+  };
 
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this subscriber?")) return;
@@ -79,7 +89,7 @@ export default function AdminSubscribersPage() {
       }
 
       toast.success("Subscriber deleted");
-      fetchSubscribers(pagination.page, search);
+      refreshSubscribers();
     } catch {
       toast.error("Failed to delete subscriber");
     }
@@ -112,7 +122,7 @@ export default function AdminSubscribersPage() {
       setNewFirstName("");
       setNewLastName("");
       setNewEmail("");
-      fetchSubscribers(1, search);
+      refreshSubscribers();
     } catch {
       toast.error("Failed to add subscriber");
     } finally {
@@ -121,7 +131,7 @@ export default function AdminSubscribersPage() {
   };
 
   const handlePageChange = (page: number) => {
-    fetchSubscribers(page, search);
+    setCurrentPage(page);
   };
 
   return (
