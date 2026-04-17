@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Subscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  firstName String
+  lastName  String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lists     SubscriberListMember[]
+}
+
+model SubscriberList {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  members     SubscriberListMember[]
+}
+
+model SubscriberListMember {
+  id             String         @id @default(cuid())
+  subscriber     Subscriber     @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
+  subscriberId   String
+  list           SubscriberList @relation(fields: [listId], references: [id], onDelete: Cascade)
+  listId         String
+  createdAt      DateTime       @default(now())
+
+  @@unique([subscriberId, listId])
+}
+
+model Article {
+  id              String   @id @default(cuid())
+  title           String
+  content         String
+  excerpt         String?
+  status          String   @default("draft")
+  sendNewsletter  Boolean  @default(true)
+  newsletterSent  Boolean  @default(false)
+  publishedAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  views           ArticleView[]
+  emailLogs       EmailLog[]
+}
+
+model ArticleView {
+  id        String   @id @default(cuid())
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleId String
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+}
+
+model EmailLog {
+  id        String   @id @default(cuid())
+  article   Article? @relation(fields: [articleId], references: [id], onDelete: SetNull)
+  articleId String?
+  type      String
+  to        String
+  subject   String
+  status    String
+  resendId  String?
+  error     String?
+  createdAt DateTime @default(now())
+}
