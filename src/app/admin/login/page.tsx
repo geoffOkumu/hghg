@@ -43,17 +43,15 @@ export default function AdminLoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-violet-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+          <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center mx-auto mb-4 shadow-sm">
             <span className="text-white font-bold text-lg">HG</span>
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Admin Login</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Holy Ghost House of God
-          </p>
+          <p className="text-sm text-gray-500 mt-1">Holy Ghost House of God</p>
         </div>
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4"
+          className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-4"
         >
           <Input
             label="Email"

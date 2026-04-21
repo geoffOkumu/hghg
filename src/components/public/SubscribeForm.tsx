@@ -44,21 +44,27 @@ export function SubscribeForm() {
     <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4">
       <div className="grid grid-cols-2 gap-3">
         <Input
-          placeholder="First Name"
+          label="First Name"
+          labelClassName="text-indigo-100"
+          placeholder="Jane"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
           required
         />
         <Input
-          placeholder="Last Name"
+          label="Last Name"
+          labelClassName="text-indigo-100"
+          placeholder="Doe"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
           required
         />
       </div>
       <Input
+        label="Email Address"
+        labelClassName="text-indigo-100"
         type="email"
-        placeholder="Email Address"
+        placeholder="jane@example.com"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required

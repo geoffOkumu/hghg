@@ -72,7 +72,7 @@ export default function ArticlePage({
             </h1>
             <Link
               href="/"
-              className="text-violet-600 hover:text-violet-700 font-medium"
+              className="text-indigo-600 hover:text-indigo-700 font-medium transition-colors duration-150"
             >
               ← Back to Home
             </Link>
@@ -90,7 +90,7 @@ export default function ArticlePage({
         <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <Link
             href="/"
-            className="inline-flex items-center text-sm text-gray-500 hover:text-violet-600 mb-8"
+            className="inline-flex items-center text-sm text-gray-500 hover:text-indigo-600 transition-colors duration-150 mb-8"
           >
             <svg
               className="mr-1 w-4 h-4"

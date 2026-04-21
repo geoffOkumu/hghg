@@ -130,9 +130,9 @@ export default function AdminArticlesPage() {
           <button
             key={status}
             onClick={() => setStatusFilter(status)}
-            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+            className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ease-in-out ${
               statusFilter === status
-                ? "bg-violet-600 text-white"
+                ? "bg-indigo-600 text-white shadow-sm"
                 : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
             }`}
           >
@@ -147,7 +147,7 @@ export default function AdminArticlesPage() {
         <Card>
           <div className="text-center py-8">
             <p className="text-gray-500">No articles found.</p>
-            <Link href="/admin/articles/new" className="text-violet-600 hover:text-violet-700 text-sm font-medium mt-2 inline-block">
+            <Link href="/admin/articles/new" className="text-indigo-600 hover:text-indigo-700 text-sm font-medium mt-2 inline-block transition-colors duration-150">
               Create your first article →
             </Link>
           </div>

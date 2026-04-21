@@ -164,18 +164,23 @@ export default function AdminSubscribersPage() {
       {/* Search */}
       <div className="mb-6">
         <div className="relative max-w-md">
+          <label htmlFor="subscriber-search" className="sr-only">
+            Search subscribers
+          </label>
           <input
+            id="subscriber-search"
             type="text"
             placeholder="Search by name or email..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+            className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded shadow-sm text-sm bg-white transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           />
           <svg
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
