@@ -115,15 +115,19 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {statCards.map((stat) => (
           <Card key={stat.label}>
-            <div className="flex items-start gap-4">
+            <div
+              className="flex items-start gap-4"
+              aria-label={`${stat.label}: ${stat.value}`}
+            >
               <div
                 className={`w-12 h-12 ${stat.bg} rounded-lg flex items-center justify-center shrink-0 ${stat.color}`}
+                aria-hidden="true"
               >
                 {stat.icon}
               </div>
               <div>
-                <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-                <p className="text-sm font-medium text-gray-600">{stat.label}</p>
+                <p className="text-2xl font-bold text-gray-900" aria-hidden="true">{stat.value}</p>
+                <p className="text-sm font-medium text-gray-600" aria-hidden="true">{stat.label}</p>
                 <p className="text-xs text-gray-400 mt-0.5">{stat.subtext}</p>
               </div>
             </div>

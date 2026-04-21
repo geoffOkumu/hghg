@@ -22,7 +22,7 @@ export function Input({
       {label && (
         <label
           htmlFor={id}
-          className={`block text-sm font-medium mb-1 ${labelClassName || "text-gray-700"}`}
+          className={`block text-sm font-medium mb-1 ${labelClassName ? labelClassName : "text-gray-700"}`}
         >
           {label}
         </label>
