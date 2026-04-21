@@ -99,27 +99,29 @@ export default function EditArticlePage({
             </Card>
 
             <Card>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="content">
                 Content (Markdown)
               </label>
               <textarea
+                id="content"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="Write your article content here..."
-                className="w-full h-96 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent font-mono text-sm resize-y"
+                className="w-full h-96 px-3 py-2 border border-gray-300 rounded shadow-sm text-sm transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-mono resize-y"
                 required
               />
             </Card>
 
             <Card>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="excerpt">
                 Excerpt (optional)
               </label>
               <textarea
+                id="excerpt"
                 value={excerpt}
                 onChange={(e) => setExcerpt(e.target.value)}
                 placeholder="Short summary of the article"
-                className="w-full h-24 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm resize-y"
+                className="w-full h-24 px-3 py-2 border border-gray-300 rounded shadow-sm text-sm transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-y"
               />
             </Card>
           </div>
@@ -139,7 +141,7 @@ export default function EditArticlePage({
                   <select
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 rounded shadow-sm text-sm transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                   >
                     <option value="draft">Draft</option>
                     <option value="published">Published</option>
@@ -152,7 +154,7 @@ export default function EditArticlePage({
                     id="sendNewsletter"
                     checked={sendNewsletter}
                     onChange={(e) => setSendNewsletter(e.target.checked)}
-                    className="w-4 h-4 text-violet-600 border-gray-300 rounded focus:ring-violet-500"
+                    className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                   />
                   <label
                     htmlFor="sendNewsletter"

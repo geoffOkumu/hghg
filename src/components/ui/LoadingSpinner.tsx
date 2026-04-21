@@ -8,10 +8,12 @@ export function LoadingSpinner({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
   return (
     <div className="flex items-center justify-center p-8">
       <svg
-        className={`animate-spin ${sizes[size]} text-violet-600`}
+        className={`animate-spin ${sizes[size]} text-indigo-600`}
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
+        aria-hidden="true"
+        role="status"
       >
         <circle
           className="opacity-25"

@@ -17,20 +17,20 @@ export function ArticleCard({
   viewCount,
 }: ArticleCardProps) {
   return (
-    <article className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+    <article className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200 ease-in-out">
       <div className="flex items-center gap-3 text-sm text-gray-500 mb-3">
         {publishedAt && (
           <time dateTime={publishedAt}>
             {format(new Date(publishedAt), "MMMM d, yyyy")}
           </time>
         )}
-        <span>·</span>
+        <span aria-hidden="true">·</span>
         <span>{viewCount} views</span>
       </div>
       <h2 className="text-xl font-bold text-gray-900 mb-2">
         <Link
           href={`/articles/${id}`}
-          className="hover:text-violet-600 transition-colors"
+          className="hover:text-indigo-600 transition-colors duration-150"
         >
           {title}
         </Link>
@@ -40,7 +40,7 @@ export function ArticleCard({
       )}
       <Link
         href={`/articles/${id}`}
-        className="inline-flex items-center text-sm font-medium text-violet-600 hover:text-violet-700"
+        className="inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors duration-150"
       >
         Read More
         <svg
@@ -48,6 +48,7 @@ export function ArticleCard({
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
